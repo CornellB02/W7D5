@@ -25,7 +25,7 @@ class User < ApplicationRecord
         self.session_token ||= SecureRandom::urlsafe_base64
     end
 
-    def find_by_creds(username, password)
+    def self.find_by_creds(username, password)
         user = User.find_by(username: username)
         if user && is_password(password)
             user 
@@ -36,7 +36,7 @@ class User < ApplicationRecord
 
     def is_password?(new_pass)
         obj = BCrypt::Password.new(new_pass)
-        obj.is_password?
+        obj.is_password?(new_pass)
     end
 
     def password=(new_pass)
