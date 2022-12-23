@@ -35,12 +35,12 @@ class User < ApplicationRecord
     end
 
     def is_password?(new_pass)
-        obj = Bcrypt::Password.new(new_pass)
+        obj = BCrypt::Password.new(new_pass)
         obj.is_password?
     end
 
     def password=(new_pass)
-        self.password_digest = Bcript::Password.create(new_pass)
+        self.password_digest = BCrypt::Password.create(new_pass)
         @password = new_pass
     end
 
@@ -49,5 +49,5 @@ class User < ApplicationRecord
         self.save!
         self.session_token
     end
-    
+
 end
