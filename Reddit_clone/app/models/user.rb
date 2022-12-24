@@ -12,6 +12,7 @@
 class User < ApplicationRecord
 
     attr_reader :password
+
     validates :username, :session_token, presence: true, uniqueness: true
     validates :password, length: {minimum: 6}, allow_nil: true
     validates :password_digest, presence: true 
@@ -27,7 +28,7 @@ class User < ApplicationRecord
 
     def self.find_by_creds(username, password)
         user = User.find_by(username: username)
-        if user && is_password(password)
+        if user && user.is_password?(password)
             user 
         else 
             nil
@@ -35,7 +36,7 @@ class User < ApplicationRecord
     end
 
     def is_password?(new_pass)
-        obj = BCrypt::Password.new(new_pass)
+        obj = BCrypt::Password.new(self.password_digest)
         obj.is_password?(new_pass)
     end
 
